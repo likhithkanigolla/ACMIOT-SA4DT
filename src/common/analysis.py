@@ -77,7 +77,7 @@ def run_analysis(output_dir: str = "results") -> None:
     Produces:
       aggregate_by_class.csv, statistical_tests.csv, confidence_intervals.csv,
       multi_scale_breakdown.csv, per_scenario_breakdown.csv,
-      paper_tables.tex, figures/fig_*.pdf/.png, analysis_report.txt
+      figures/fig_*.pdf, analysis_report.txt
 
     Verbatim from: scripts/analyze_results.py run_analysis() (L56-557).
     """
@@ -266,65 +266,6 @@ def run_analysis(output_dir: str = "results") -> None:
                                   "Cost": round(cost, 3), "N": n})
     pd.DataFrame(scenario_data).to_csv(out_path / "per_scenario_breakdown.csv", index=False)
 
-    # 8. LaTeX tables
-    with open(out_path / "paper_tables.tex", "w") as f:
-        f.write("% Table 1: Cumulative Adaptation Results\n")
-        f.write("\\begin{table*}[t]\n\\centering\n")
-        f.write("\\caption{Cumulative Adaptation Results Across All Scales and Trials. ")
-        f.write("Success Rate (SR), Mean Time-to-Recover (TTR$\\pm$SD), and Integrated Recovery Error (IRE$\\pm$SD). ")
-        f.write("Statistical significance: $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$ (Wilcoxon signed-rank vs.\\ Reactive).}\n")
-        f.write("\\label{tab:main-results}\n")
-        f.write("\\begin{tabular}{llccc}\n\\toprule\n")
-        f.write("\\textbf{Mode} & \\textbf{Uncertainty} & \\textbf{SR} & \\textbf{TTR (eps)} & \\textbf{IRE} \\\\\n")
-        f.write("\\midrule\n")
-        for _, row in agg.iterrows():
-            mode_label = {"reactive": "Reactive", "sa_only": "SA-Only", "sa_dt": "SA-DT"}[row["mode"]]
-            uc_label = row["uncertainty_class"].capitalize()
-            sr = f"{row['success_mean']:.2f}"
-            ttr = f"{row['recovery_mean']:.1f}$\\pm${row['recovery_std']:.1f}" if not np.isnan(row["recovery_mean"]) else "N/A"
-            ire = f"{row['ire_mean']:.2f}$\\pm${row['ire_std']:.2f}"
-            f.write(f"{mode_label} & {uc_label} & {sr} & {ttr} & {ire} \\\\\n")
-        f.write("\\bottomrule\n\\end{tabular}\n\\end{table*}\n\n")
-
-        f.write("% Table 2: Statistical Significance Tests\n")
-        f.write("\\begin{table}[t]\n\\centering\n")
-        f.write("\\caption{Wilcoxon Signed-Rank Tests. $W$=test statistic, $p$=p-value, $r$=rank-biserial effect size.}\n")
-        f.write("\\label{tab:stat-tests}\n")
-        f.write("\\begin{tabular}{p{3.2cm}ccc}\n\\toprule\n")
-        f.write("\\textbf{Comparison} & \\textbf{W} & \\textbf{p} & \\textbf{r} \\\\\n")
-        f.write("\\midrule\n")
-        for _, row in df_stats.iterrows():
-            if row["p"] is not None:
-                sig = "$^{***}$" if row["p"] < 0.001 else "$^{**}$" if row["p"] < 0.01 else "$^{*}$" if row["p"] < 0.05 else ""
-                test_short = row["test"].replace("SA-DT vs ", "vs ").replace(" | ", "/")
-                f.write(f"{test_short}{sig} & {row['W']:.0f} & {row['p']:.4f} & {row['effect_r']:.3f} \\\\\n")
-        f.write("\\bottomrule\n\\end{tabular}\n\\end{table}\n\n")
-
-        f.write("% Table 3: Latency Breakdown\n")
-        f.write("\\begin{table}[t]\n\\centering\n")
-        f.write("\\caption{Runtime Latency Breakdown. $T_E^{\\dagger}$ is conditioned on episodes where actuation occurred.}\n")
-        f.write("\\label{tab:latency}\n")
-        f.write("\\begin{tabular}{lccccc}\n\\toprule\n")
-        f.write("\\textbf{Mode} & $T_M$ & $T_P$ & $T_E$ & $T_E^{\\dagger}$ & \\textbf{Act.\\%} \\\\\n")
-        f.write("\\midrule\n")
-        for _, row in tab_lat.iterrows():
-            mode_label = {"reactive": "Reactive", "sa_only": "SA-Only", "sa_dt": "SA-DT"}[row["mode"]]
-            f.write(f"{mode_label} & {row['T_M_ms']:.1f} & {row['T_P_ms']:.3f} & {row['T_E_ms']:.1f} & {row['T_E_cond_ms']:.1f} & {row['actuated_pct']:.0f}\\% \\\\\n")
-        f.write("\\bottomrule\n\\end{tabular}\n\\end{table}\n\n")
-
-        if has_scale and scale_data:
-            f.write("% Table 4: Multi-Scale Results\n")
-            f.write("\\begin{table*}[t]\n\\centering\n")
-            f.write("\\caption{Performance Across Temporal Scales.}\n")
-            f.write("\\label{tab:multi-scale}\n")
-            f.write("\\begin{tabular}{lcccc}\n\\toprule\n")
-            f.write("\\textbf{Scale} & \\textbf{Mode} & \\textbf{SR} & \\textbf{IRE} & \\textbf{TTR} \\\\\n")
-            f.write("\\midrule\n")
-            for _, row in pd.DataFrame(scale_data).iterrows():
-                mode_label = {"reactive": "Reactive", "sa_only": "SA-Only", "sa_dt": "SA-DT"}[row["mode"]]
-                f.write(f"{row['scale_days']}d & {mode_label} & {row['success_rate']:.3f} & {row['ire_mean']:.2f} & {row['recovery_mean']} \\\\\n")
-            f.write("\\bottomrule\n\\end{tabular}\n\\end{table*}\n\n")
-
     # 9. Figures
     try:
         import matplotlib
@@ -368,7 +309,6 @@ def run_analysis(output_dir: str = "results") -> None:
                     ax.set_ylim(0, 1.0)
                 plt.tight_layout()
                 plt.savefig(figures_dir / f"{fig_name}.pdf", dpi=300)
-                plt.savefig(figures_dir / f"{fig_name}.png", dpi=300)
                 plt.close()
 
         if not tab_lat.empty:
@@ -390,7 +330,6 @@ def run_analysis(output_dir: str = "results") -> None:
             ax.legend()
             plt.tight_layout()
             plt.savefig(figures_dir / "fig_latency_breakdown.pdf", dpi=300)
-            plt.savefig(figures_dir / "fig_latency_breakdown.png", dpi=300)
             plt.close()
 
         if has_scale and scale_data:
@@ -408,7 +347,6 @@ def run_analysis(output_dir: str = "results") -> None:
             ax2.set_title("IRE vs. Scale"); ax2.legend(); ax2.set_ylim(0, None)
             plt.tight_layout()
             plt.savefig(figures_dir / "fig_multi_scale_trend.pdf", dpi=300)
-            plt.savefig(figures_dir / "fig_multi_scale_trend.png", dpi=300)
             plt.close()
 
         print(f"Figures saved to {figures_dir}/")
@@ -438,5 +376,5 @@ def run_analysis(output_dir: str = "results") -> None:
         f.write(report_text)
 
     print(report_text)
-    print(f"\nAnalysis complete. Tables in {out_path}/paper_tables.tex")
+    print(f"\nAnalysis complete. Results saved to {out_path}")
     print(f"Statistical tests in {out_path}/statistical_tests.csv")

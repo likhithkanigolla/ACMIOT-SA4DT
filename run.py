@@ -157,7 +157,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--no-data-gen",
         action="store_true",
-        help="Skip data generation (use existing synthetic_telemetry.csv in --output-dir).",
+        help="Skip data generation (use existing telemetry.csv in --output-dir).",
     )
 
     # -- Reproduce paper results --
@@ -221,7 +221,7 @@ def run_single(args) -> None:
     config = Config()
     ks = KnowledgeStore(config)
 
-    csv_path = out_dir / "synthetic_telemetry.csv"
+    csv_path = out_dir / "telemetry.csv"
 
     # -- Data generation --
     if not args.no_data_gen:
@@ -319,7 +319,7 @@ def run_reproduce(table_num=None, figure_num=None, args=None) -> None:
 
             trial_dir = out_dir / f"scale_{days}d_trial_{trial+1}"
             trial_dir.mkdir(exist_ok=True)
-            csv_path = trial_dir / "synthetic_telemetry.csv"
+            csv_path = trial_dir / "telemetry.csv"
 
             # Generate data
             generate_dataset(
@@ -369,7 +369,7 @@ def run_reproduce(table_num=None, figure_num=None, args=None) -> None:
 
     print(f"\n✓ Reproduction complete.")
     if table_num:
-        print(f"  → LaTeX table in: {out_dir}/paper_tables.tex")
+        print(f"  → Analysis report in: {out_dir}/analysis_report.txt")
     if figure_num:
         print(f"  → Figures in: {out_dir}/figures/")
 

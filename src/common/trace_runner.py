@@ -49,7 +49,7 @@ def run_trace(
 
     Parameters
     ----------
-    csv_path       : Path to synthetic_telemetry.csv.
+    csv_path       : Path to telemetry.csv.
     mode           : AdaptationMode instance (ReactiveBaseline, SAOnly, or SADT).
     config         : Shared Config from KnowledgeStore.
     knowledge_store: KnowledgeStore — used by ActionExecutor to record residuals.

@@ -35,7 +35,7 @@ python run.py --mode sa_dt --scale 1 --seed 42 --trace
 ```bash
 # Run Reactive, SA-Only, and SA-DT baselines sequentially on a 1-day trace and generate metrics
 python run.py --mode all --scale 1 --seed 42
-# Output: results/trial_summary.csv, raw_episodes.jsonl, paper_tables.tex, and figures/
+# Output: results/trial_summary.csv, raw_episodes.jsonl, analysis_report.txt, and figures/
 ```
 
 ### 3. Reproduce Paper Tables & Figures
