@@ -69,7 +69,7 @@ TABLE_CONFIGS = {
 }
 FIGURE_CONFIGS = {
     2: {"description": "Figure 2: Success Rate by Uncertainty Class"},
-    3: {"description": "Figure 3: Integrated Recovery Error by Uncertainty Class"},
+    3: {"description": "Figure 3: Integrated Recovery Error (Lower is Better) by Uncertainty Class"},
     4: {"description": "Figure 4: Runtime Latency Stacked Bar"},
     5: {"description": "Figure 5: Multi-Scale Success Rate and IRE Trend"},
 }
@@ -180,7 +180,7 @@ def build_parser() -> argparse.ArgumentParser:
         help=textwrap.dedent("""\
             Reproduce one of the paper's figures.
               2 → Figure 2: Success rate by uncertainty class
-              3 → Figure 3: Integrated Recovery Error by uncertainty class
+              3 → Figure 3: Integrated Recovery Error (Lower is Better) by uncertainty class
               4 → Figure 4: Latency stacked bar
               5 → Figure 5: Multi-scale SR and IRE trend"""),
     )

@@ -15,7 +15,7 @@ Definitions (paper §5):
   SR  — Success Rate: fraction of trials where fault was resolved
   TTR — Time-to-Recovery: number of episodes until r < recovery_threshold
         for recovery_persistence consecutive readings
-  IRE — Integrated Recovery Error: sum(r_measured) over the incident
+  IRE — Integrated Recovery Error (Lower is Better): sum(r_measured) over the incident
   Cost — Mean actuation cost per episode
 """
 

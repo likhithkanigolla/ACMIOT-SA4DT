@@ -11,7 +11,7 @@ venv/
 .env/
 
 # Run Artifacts
-results/run_output/
+results/
 *.pdf
 *.png
 *.tex

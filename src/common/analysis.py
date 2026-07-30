@@ -347,10 +347,10 @@ def run_analysis(output_dir: str = "results") -> None:
             for fig_name, metric_mean, metric_std, ylabel, title, higher_better in [
                 ("fig_success_rate", "success_mean", "success_std", "Success Rate",
                  "Adaptation Success Rate by Uncertainty Class (Higher is Better)", True),
-                ("fig_integrated_error", "ire_mean", "ire_std", "Integrated Recovery Error (Σr_t)",
+                ("fig_integrated_error", "ire_mean", "ire_std", "Integrated Recovery Error (Lower is Better) (Σr_t)",
                  "Integrated Recovery Error (Lower is Better)", False),
                 ("fig_recovery_time", "recovery_mean", "recovery_std", "Episodes to Recover",
-                 "Mean Time-to-Recover by Uncertainty Class", False),
+                 "Mean Time-to-Recover by Uncertainty Class (Lower is Better)", False),
             ]:
                 fig, ax = plt.subplots(figsize=(8, 5))
                 for i, mode in enumerate(mode_order):
@@ -404,7 +404,7 @@ def run_analysis(output_dir: str = "results") -> None:
                          label=mode_labels[mode], color=palette[mode], linewidth=2, markersize=8)
             ax1.set_xlabel("Temporal Scale (days)"); ax1.set_ylabel("Success Rate")
             ax1.set_title("Success Rate vs. Scale"); ax1.legend(); ax1.set_ylim(0, 1.0)
-            ax2.set_xlabel("Temporal Scale (days)"); ax2.set_ylabel("Integrated Recovery Error")
+            ax2.set_xlabel("Temporal Scale (days)"); ax2.set_ylabel("Integrated Recovery Error (Lower is Better)")
             ax2.set_title("IRE vs. Scale"); ax2.legend(); ax2.set_ylim(0, None)
             plt.tight_layout()
             plt.savefig(figures_dir / "fig_multi_scale_trend.pdf", dpi=300)
