@@ -68,7 +68,7 @@ python run.py --mode sa_dt \
               --live-actuator-url "http://192.168.1.100:5000/actuate" \
               --trace
 ```
-When live endpoints are specified, the Monitor fetches live sensor JSON and measures true network ingestion latency ($T_M$), while the Command Orchestrator translates abstract candidates ($C_1 - C_6$) into concrete hardware actuator set-points (e.g. PWM fan duty cycle or calibration offsets) and measures actual hardware ACK round-trip latency ($T_E$). See [docs/real_world_deployment_guide.md](file:///Users/likhithkanigolla/IIITH/code-files/Digital-Twin/digital-twin-v2/scripts/data_analyser/artifact_package/docs/real_world_deployment_guide.md) for step-by-step controller setup and reference Raspberry Pi gateway Python scripts.
+When live endpoints are specified, the Monitor fetches live sensor JSON and measures true network ingestion latency ($T_M$), while the Command Orchestrator translates abstract candidates ($C_1 - C_6$) into concrete hardware actuator set-points (e.g. PWM fan duty cycle or calibration offsets) and measures actual hardware ACK round-trip latency ($T_E$). See [docs/real_world_deployment_guide.md](artifact_package/docs/real_world_deployment_guide.md) for step-by-step controller setup and reference Raspberry Pi gateway Python scripts.
 
 ---
 
