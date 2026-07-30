@@ -1,0 +1,93 @@
+{
+  "simulation_days": 3,
+  "frequency_minutes": 1,
+  "nodes": ["SMART-ROOM-01"],
+  "parameters": {
+    "temperature": {
+      "base": 25.0,
+      "amplitude": 5.0,
+      "noise": 0.3,
+      "type": "continuous"
+    },
+    "co2_ppm": {
+      "base": 150.0,
+      "amplitude": 80.0,
+      "noise": 10.0,
+      "type": "continuous"
+    },
+    "lux": {
+      "base": 300.0,
+      "amplitude": 280.0,
+      "noise": 15.0,
+      "type": "daynight"
+    },
+    "humidity": {
+      "base": 50.0,
+      "amplitude": 10.0,
+      "noise": 2.0,
+      "type": "continuous"
+    },
+    "pir": {
+      "base": 0.0,
+      "amplitude": 1.0,
+      "noise": 0.0,
+      "type": "binary"
+    }
+  },
+  "scenarios": {
+    "S1_Sensor_Drift": {
+      "prob_per_day": 0.5,
+      "duration_samples": 60,
+      "magnitude": 15.0
+    },
+    "S2_Model_Error": {
+      "prob_per_day": 0.2,
+      "duration_samples": 120,
+      "bias": 2.5
+    },
+    "S3_Actuation_Deviation": {
+      "prob_per_day": 0.5,
+      "duration_samples": 30,
+      "offset": -10.0
+    },
+    "S4_Stuck_Sensor": {
+      "prob_per_day": 0.5,
+      "duration_samples": 45
+    },
+    "S5_Behavioral_Drift": {
+      "prob_per_day": 0.2,
+      "duration_samples": 200,
+      "amplitude_multiplier": 0.5
+    },
+    "S6_Actuator_Failure": {
+      "prob_per_day": 0.2,
+      "duration_samples": 30
+    },
+    "S7_Measurement_Noise": {
+      "prob_per_day": 1.0,
+      "duration_samples": 10,
+      "magnitude_multiplier": 5.0
+    },
+    "S8_Packet_Loss": {
+      "prob_per_day": 0.5,
+      "duration_samples": 30
+    },
+    "S9_Network_Instability": {
+      "prob_per_day": 0.5,
+      "duration_samples": 20
+    },
+    "S10_Reconnection_Events": {
+      "prob_per_day": "linked_to_S8",
+      "duration_samples": 10
+    },
+    "S11_Environmental_Variability": {
+      "prob_per_day": 0.2,
+      "duration_samples": 40,
+      "magnitude": 20.0
+    },
+    "Clock_Sync_Failure": {
+      "prob_per_day": 2.5,
+      "duration_samples": 1
+    }
+  }
+}

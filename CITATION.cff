@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - name: "Anonymous Authors"
+title: "Digital Twins for Uncertainty Mitigation in Self-Adaptive Smart City IoT Systems"
+version: "1.0.0"
+date-released: 2026
+conference:
+  name: "16th International Conference on the Internet of Things (IoT '26)"
+  location: "Newcastle upon Tyne, United Kingdom"
+  date-start: "2026-11-17"
+  date-end: "2026-11-20"
+type: software
+repository-code: ""
+license: ""
+note: "To be updated with author information and DOI upon publication."

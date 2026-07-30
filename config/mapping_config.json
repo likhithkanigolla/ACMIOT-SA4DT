@@ -1,0 +1,18 @@
+{
+  "timestamp_col": "timestamp",
+  "node_col": "node_id",
+  "parameter_domains": {
+    "temperature": "Smart Room",
+    "co2_ppm": "Smart Room",
+    "lux": "Smart Room",
+    "humidity": "Smart Room",
+    "pir": "Smart Room"
+  },
+  "parameter_ranges": {
+    "temperature": [15, 35],
+    "co2_ppm": [0, 1000],
+    "lux": [0, 1000],
+    "humidity": [30, 70],
+    "pir": [0, 1]
+  }
+}
