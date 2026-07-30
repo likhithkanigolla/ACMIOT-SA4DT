@@ -146,7 +146,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--output-dir",
-        default=str(RESULTS_DIR / "run_output"),
+        default=str(RESULTS_DIR),
         help="Output directory for raw_episodes, trial_summary, and analysis CSVs.",
     )
     parser.add_argument(
@@ -288,7 +288,7 @@ def run_reproduce(table_num=None, figure_num=None, args=None) -> None:
     Reproduce a specific table or figure from the paper.
     Runs all 4 scales × 5 seeds × 3 modes (same as the full paper experiment).
     """
-    out_dir = Path(args.output_dir if args else RESULTS_DIR / "reproduce_output")
+    out_dir = Path(args.output_dir if args else RESULTS_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     target = f"Table {table_num}" if table_num else f"Figure {figure_num}"

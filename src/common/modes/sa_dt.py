@@ -98,7 +98,12 @@ class SADT(AdaptationMode):
 
         if r > config.decision_threshold or proactive:
             scenario = fault_hint if fault_hint else ""
-            base_state = prior_state.copy() if prior_state else perceived_state.copy()
+            base_state = perceived_state.copy()
+            if prior_state:
+                if base_state.get("temperature") is None:
+                    base_state["temperature"] = prior_state.get("temperature")
+                if base_state.get("co2") is None:
+                    base_state["co2"] = prior_state.get("co2")
 
             # Plan: generate feasible candidate set (with S4 pruning)
             candidates = self._planner.generate_candidates(scenario)
