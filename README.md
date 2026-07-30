@@ -60,6 +60,16 @@ Supported flags for reproduction:
   - `4`: Figure 4 — Runtime Latency Stacked Bar
   - `5`: Figure 5 — Multi-Scale Success Rate and IRE Trend
 
+### 4. Deploying on Real Hardware (Raspberry Pi & ESP32 Gateway)
+To transition from offline trace reproduction to real physical closed-loop control on an IoT Edge Gateway (such as a Raspberry Pi interfacing with ESP32 sensor/actuator nodes), pass live HTTP endpoints directly to the CLI:
+```bash
+python run.py --mode sa_dt \
+              --live-telemetry-url "http://192.168.1.100:5000/telemetry" \
+              --live-actuator-url "http://192.168.1.100:5000/actuate" \
+              --trace
+```
+When live endpoints are specified, the Monitor fetches live sensor JSON and measures true network ingestion latency ($T_M$), while the Command Orchestrator translates abstract candidates ($C_1 - C_6$) into concrete hardware actuator set-points (e.g. PWM fan duty cycle or calibration offsets) and measures actual hardware ACK round-trip latency ($T_E$). See [docs/real_world_deployment_guide.md](file:///Users/likhithkanigolla/IIITH/code-files/Digital-Twin/digital-twin-v2/scripts/data_analyser/artifact_package/docs/real_world_deployment_guide.md) for step-by-step controller setup and reference Raspberry Pi gateway Python scripts.
+
 ---
 
 ## Repository Structure & Modular Architecture
@@ -74,6 +84,7 @@ artifact_package/
 ├── CITATION.cff                       <- Citation metadata
 │
 ├── docs/
+│   ├── real_world_deployment_guide.md <- Step-by-step Raspberry Pi & ESP32 physical deployment guide
 │   ├── architecture_mapping.md        <- Component-to-file cross-reference mapping
 │   ├── refactor_log.md                <- Architectural refactoring log & regression verification
 │   ├── missing_components.md          <- Documented parameter divergences and hardware gaps

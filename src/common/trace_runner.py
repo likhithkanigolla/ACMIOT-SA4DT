@@ -66,7 +66,8 @@ def run_trace(
 
     df = pd.read_csv(csv_path)
 
-    monitor = TelemetryMonitor()
+    live_tel_url = getattr(config, "live_telemetry_url", None)
+    monitor = TelemetryMonitor(live_endpoint_url=live_tel_url)
     executor = ActionExecutor(knowledge_store)
     physical_state = PhysicalState()
 

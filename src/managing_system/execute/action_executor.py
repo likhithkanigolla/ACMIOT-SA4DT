@@ -61,7 +61,8 @@ class ActionExecutor:
 
     def __init__(self, knowledge_store: KnowledgeStore):
         self._store = knowledge_store
-        self._dispatcher = OTADispatcher()
+        live_act_url = getattr(knowledge_store.config, "live_actuator_url", None)
+        self._dispatcher = OTADispatcher(live_endpoint_url=live_act_url)
 
     def apply_and_record(
         self,

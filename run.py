@@ -160,6 +160,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Skip data generation (use existing telemetry.csv in --output-dir).",
     )
 
+    # -- Real-world Edge Gateway / Raspberry Pi Integration --
+    parser.add_argument(
+        "--live-telemetry-url",
+        default=None,
+        help="REST/HTTP endpoint to fetch real-time telemetry from an edge gateway (e.g. Raspberry Pi / ESP32).",
+    )
+    parser.add_argument(
+        "--live-actuator-url",
+        default=None,
+        help="REST/HTTP endpoint to dispatch physical actuation commands to hardware setpoints.",
+    )
+
     # -- Reproduce paper results --
     parser.add_argument(
         "--reproduce-table",
@@ -219,6 +231,12 @@ def run_single(args) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     config = Config()
+    if getattr(args, "live_telemetry_url", None):
+        config.live_telemetry_url = args.live_telemetry_url
+        print(f"[Edge Integration] Connected live telemetry sensor stream: {config.live_telemetry_url}")
+    if getattr(args, "live_actuator_url", None):
+        config.live_actuator_url = args.live_actuator_url
+        print(f"[Edge Integration] Connected live hardware actuator dispatch: {config.live_actuator_url}")
     ks = KnowledgeStore(config)
 
     csv_path = out_dir / "telemetry.csv"

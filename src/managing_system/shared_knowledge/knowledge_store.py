@@ -55,6 +55,11 @@ class Config:
     noise_std: float = 2.0
     max_gap_episodes: int = 10
 
+    # Real-world Edge Hardware deployment hooks (e.g., Raspberry Pi / ESP32 gateway)
+    # Set to live HTTP/REST endpoints to transition from offline simulation to physical execution
+    live_telemetry_url: Optional[str] = None  # e.g., "http://192.168.1.100:5000/telemetry"
+    live_actuator_url: Optional[str] = None   # e.g., "http://192.168.1.100:5000/actuate"
+
 
 # ---------------------------------------------------------------------------
 # Runtime data structures

@@ -16,6 +16,10 @@ SensorReading construction) and lines 71-73 (monitoring latency measurement).
 
 from __future__ import annotations
 
+import json
+import time
+import urllib.request
+import urllib.error
 import numpy as np
 from typing import Optional
 
@@ -68,6 +72,17 @@ class TelemetryMonitor:
     _LATENCY_BASE_MS: float = 5.0
     _LATENCY_STD_MS: float = 1.0
 
+    def __init__(self, live_endpoint_url: Optional[str] = None):
+        """
+        Parameters
+        ----------
+        live_endpoint_url : Optional[str]
+            HTTP/REST endpoint of a live IoT Node sensor gateway (e.g., Raspberry Pi).
+            If set (e.g., "http://192.168.1.100:5000/telemetry"), telemetry will be polled
+            live and T_M will reflect true network ingestion latency.
+        """
+        self._live_endpoint = live_endpoint_url
+
     def ingest_row(
         self,
         row: dict,
@@ -94,6 +109,24 @@ class TelemetryMonitor:
         float
             T_M — monitoring latency in milliseconds.
         """
+        # --- LIVE HARDWARE DEPLOYMENT MODE ---
+        measured_tm_ms: Optional[float] = None
+        if self._live_endpoint:
+            start_ns = time.time_ns()
+            try:
+                with urllib.request.urlopen(self._live_endpoint, timeout=3.0) as resp:
+                    live_data = json.loads(resp.read().decode("utf-8"))
+                    # Overlay live measurements while preserving fallback defaults
+                    row = {
+                        "temperature": live_data.get("temperature", row.get("temperature")),
+                        "co2_ppm": live_data.get("co2_ppm", row.get("co2_ppm")),
+                        "pir": live_data.get("pir", row.get("pir", 0)),
+                        "anomaly_label": live_data.get("anomaly_label", row.get("anomaly_label", "NORMAL")),
+                    }
+                measured_tm_ms = (time.time_ns() - start_ns) / 1_000_000.0
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+                print(f"[TelemetryMonitor] Warning: Live endpoint {self._live_endpoint} unreachable ({e}). Fallback to trace row.")
+
         label = row["anomaly_label"]
 
         # Extract raw sensor values (None if missing — simulates packet loss)
@@ -130,8 +163,11 @@ class TelemetryMonitor:
             lag_seconds=lag_seconds,
         )
 
-        # Simulated monitoring latency (sensor to gateway) — T_M
-        t_m = float(self._LATENCY_BASE_MS + np.random.normal(0, self._LATENCY_STD_MS))
+        # Measured monitoring latency (live hardware) or simulated Gaussian latency (offline) — T_M
+        if measured_tm_ms is not None:
+            t_m = measured_tm_ms
+        else:
+            t_m = float(self._LATENCY_BASE_MS + np.random.normal(0, self._LATENCY_STD_MS))
 
         return perceived_reading, t_m
 
