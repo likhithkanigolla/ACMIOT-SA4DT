@@ -168,21 +168,6 @@ pip install -r environment/requirements.txt
 
 ---
 
-## Automated Regression & Parity Verification
-
-To guarantee that decomposing the original monolithic code into modular OOP components did not introduce any algorithmic drift or numerical discrepancies, a comprehensive regression test suite is provided.
-
-```bash
-# Run the 55 automated bit-for-bit regression tests
-python -m pytest tests/test_regression.py -v
-# or standalone:
-python tests/test_regression.py
-```
-
-The suite verifies that every formula (Eq. 1–4), adaptation decision branch, utility calculation, and latency metric matches the reference pre-refactor implementation across nominal, anomaly, and edge-case inputs.
-
----
-
 ## Parameter Reference Table (Section 5 Values)
 
 | Parameter | Symbol | Paper Value | Code Value | File / Module | Notes |
