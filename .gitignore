@@ -1,0 +1,18 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest cache
+.pytest_cache/
+
+# Environments
+venv/
+.env/
+
+# Run Artifacts
+results/run_output/
+*.pdf
+*.png
+*.tex
+*.jsonl
