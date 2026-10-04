@@ -1,0 +1,9 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Kanigolla
+  given-names: Likhith
+orcid: https://orcid.org/0009-0005-3748-3346
+title:
+version: ACM-IOT
+date-released: 2026-10-04
