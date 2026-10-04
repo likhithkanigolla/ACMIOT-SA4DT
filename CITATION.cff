@@ -1,9 +1,18 @@
 cff-version: 1.1.0
-message: "If you use this software, please cite it as below."
+message: "If you use this work, please cite it as below."
 authors:
-- family-names: Kanigolla
-  given-names: Likhith
-orcid: https://orcid.org/0009-0005-3748-3346
-title:
-version: ACM-IOT
+  - family-names: Kanigolla
+    given-names: Likhith
+    orcid: "https://orcid.org/0009-0005-3748-3346"
+  - family-names: Varada
+    given-names: Sasidhar
+    orcid: "https://orcid.org/0009-0000-7486-2760"
+  - family-names: Zech
+    given-names: Philipp
+    orcid: "https://orcid.org/0000-0002-4952-4337"
+  - family-names: Vaidhyanathan
+    given-names: Karthik
+    orcid: "https://orcid.org/0000-0003-2317-6175"
+title: "Digital Twins for Uncertainty Mitigation in Self-Adaptive Smart City IoT Systems"
+version: "ACM-IOT"
 date-released: 2026-10-04
